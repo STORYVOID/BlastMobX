@@ -3,77 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlastMobX - Inventory & Battle</title>
+    <title>BlastMobX</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex flex-col justify-between select-none">
+<body class="bg-gray-950 text-white min-h-screen flex flex-col items-center justify-between p-4 select-none">
 
-    <!-- Header Bar -->
-    <header class="flex items-center justify-between p-3 bg-gray-800 border-b border-gray-700">
-        <div class="flex items-center gap-1 bg-yellow-500/20 px-3 py-1 rounded-full border border-yellow-500/40">
-            <span>🪙</span>
-            <span id="coins" class="font-bold text-yellow-400">150</span>
+    <!-- Top Status Bar -->
+    <div class="w-full max-w-sm flex justify-between items-center bg-gray-900 border border-gray-800 p-3 rounded-xl shadow-lg">
+        <div class="text-sm font-bold text-yellow-400">⚡ Power: <span id="power">0</span></div>
+        <button onclick="resetBag()" class="text-xs bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1 rounded-lg">Clear</button>
+    </div>
+
+    <!-- Main 7x7 Grid -->
+    <div class="my-auto">
+        <div class="bg-gray-900 p-2.5 rounded-2xl border-2 border-yellow-500/30 shadow-2xl">
+            <div id="grid" class="grid grid-cols-7 gap-1.5 w-[330px] h-[330px]"></div>
         </div>
-        <h1 class="text-sm font-bold tracking-wider uppercase text-yellow-400">BlastMobX</h1>
-        <div class="text-xs bg-gray-700 px-2 py-1 rounded text-yellow-300">Power: <span id="power">0</span></div>
-    </header>
+    </div>
 
-    <!-- Main Bag Grid -->
-    <main class="flex flex-col items-center p-4">
-        <div class="flex justify-between w-full max-w-[320px] mb-2 items-center">
-            <h2 class="text-xs text-gray-400">Tap item, then tap grid slot</h2>
-            <button onclick="resetBag()" class="text-[10px] bg-red-600/80 hover:bg-red-600 px-2 py-1 rounded text-white font-medium">Clear Bag 🗑️</button>
+    <!-- Bottom Item Selection Bar -->
+    <div class="w-full max-w-sm bg-gray-900 border border-gray-800 p-3 rounded-2xl flex justify-around items-center shadow-lg">
+        <div onclick="selectItem('Pistol', 50, '🔫')" class="cursor-pointer bg-gray-800 border border-blue-500/50 p-2 rounded-xl text-center w-20 hover:bg-gray-700 transition">
+            <div class="text-2xl">🔫</div>
+            <div class="text-[10px] text-blue-300 mt-0.5">50 Pwr</div>
         </div>
-
-        <div class="bg-gray-800 p-2 rounded-xl border-2 border-yellow-500/40 shadow-xl">
-            <div id="grid" class="grid grid-cols-7 gap-1 w-[320px] h-[320px]"></div>
+        <div onclick="selectItem('Medkit', 30, '💊')" class="cursor-pointer bg-gray-800 border border-green-500/50 p-2 rounded-xl text-center w-20 hover:bg-gray-700 transition">
+            <div class="text-2xl">💊</div>
+            <div class="text-[10px] text-green-300 mt-0.5">30 Pwr</div>
         </div>
-
-        <!-- Arsenal items -->
-        <div class="mt-4 flex gap-4">
-            <div onclick="selectItem('Pistol', 50, '🔫')" class="bg-gray-800 border border-blue-500 p-2 rounded-lg cursor-pointer text-center">
-                <div class="text-xl">🔫</div>
-                <div class="text-[9px] text-blue-300 mt-1">50 Power</div>
-            </div>
-            <div onclick="selectItem('Medkit', 30, '💊')" class="bg-gray-800 border border-green-500 p-2 rounded-lg cursor-pointer text-center">
-                <div class="text-xl">💊</div>
-                <div class="text-[9px] text-green-300 mt-1">30 Power</div>
-            </div>
-            <div onclick="selectItem('Grenade', 80, '💣')" class="bg-gray-800 border border-red-500 p-2 rounded-lg cursor-pointer text-center">
-                <div class="text-xl">💣</div>
-                <div class="text-[9px] text-red-300 mt-1">80 Power</div>
-            </div>
+        <div onclick="selectItem('Grenade', 80, '💣')" class="cursor-pointer bg-gray-800 border border-red-500/50 p-2 rounded-xl text-center w-20 hover:bg-gray-700 transition">
+            <div class="text-2xl">💣</div>
+            <div class="text-[10px] text-red-300 mt-0.5">80 Pwr</div>
         </div>
-    </main>
-
-    <!-- Footer Nav -->
-    <footer class="p-3 bg-gray-800 flex justify-around border-t border-gray-700 text-xs">
-        <span class="text-yellow-400 font-bold cursor-pointer">Bag</span>
-        <span class="text-gray-400 cursor-pointer">Arsenal</span>
-        <span class="text-gray-400 cursor-pointer">Upgrades</span>
-        <span onclick="triggerBattle()" class="text-red-400 font-bold cursor-pointer animate-pulse">Battle ⚔️</span>
-    </footer>
+    </div>
 
     <script>
-        let selected = null;
+        let selectedItem = null;
         let totalPower = 0;
         const gridState = Array(49).fill(null);
         const gridEl = document.getElementById('grid');
         const powerEl = document.getElementById('power');
 
-        function render() {
+        function renderGrid() {
             gridEl.innerHTML = '';
-            gridState.forEach((item, i) => {
+            gridState.forEach((item, index) => {
                 const cell = document.createElement('div');
-                cell.className = "bg-gray-700/50 border border-gray-600 rounded flex items-center justify-center text-lg cursor-pointer hover:bg-gray-600 aspect-square";
+                cell.className = "bg-gray-800/80 border border-gray-700/60 rounded-lg flex items-center justify-center text-2xl cursor-pointer active:scale-95 transition aspect-square";
                 cell.innerHTML = item ? item.icon : '';
+                
                 cell.onclick = () => {
-                    if (selected) {
-                        gridState[i] = selected;
-                        totalPower += selected.power;
+                    if (selectedItem) {
+                        if (gridState[index]) {
+                            totalPower -= gridState[index].power;
+                        }
+                        gridState[index] = selectedItem;
+                        totalPower += selectedItem.power;
                         powerEl.innerText = totalPower;
-                        selected = null;
-                        render();
+                        selectedItem = null;
+                        renderGrid();
+                    } else if (gridState[index]) {
+                        totalPower -= gridState[index].power;
+                        gridState[index] = null;
+                        powerEl.innerText = totalPower;
+                        renderGrid();
                     }
                 };
                 gridEl.appendChild(cell);
@@ -81,30 +73,17 @@
         }
 
         function selectItem(name, power, icon) {
-            selected = { name, power, icon };
+            selectedItem = { name, power, icon };
         }
 
         function resetBag() {
             gridState.fill(null);
             totalPower = 0;
             powerEl.innerText = 0;
-            render();
+            renderGrid();
         }
 
-        function triggerBattle() {
-            if (totalPower === 0) {
-                alert('Your bag is empty! Place items to build power before fighting.');
-                return;
-            }
-            let enemyPower = 100;
-            if (totalPower >= enemyPower) {
-                alert(`Victory! 🏆 Your Power (${totalPower}) crushed the enemy (${enemyPower})!`);
-            } else {
-                alert(`Defeat! 💀 Enemy Power (${enemyPower}) was higher than your total power (${totalPower}). Add more weapons!`);
-            }
-        }
-
-        render();
+        renderGrid();
     </script>
 </body>
 </html>
