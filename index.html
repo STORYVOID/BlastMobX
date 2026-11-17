@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlastMobX - Inventory</title>
+    <title>BlastMobX - Inventory & Battle</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col justify-between select-none">
@@ -48,10 +48,10 @@
 
     <!-- Footer Nav -->
     <footer class="p-3 bg-gray-800 flex justify-around border-t border-gray-700 text-xs">
-        <span class="text-yellow-400 font-bold">Bag</span>
-        <span class="text-gray-400">Arsenal</span>
-        <span class="text-gray-400">Upgrades</span>
-        <span class="text-gray-400">Battle</span>
+        <span class="text-yellow-400 font-bold cursor-pointer">Bag</span>
+        <span class="text-gray-400 cursor-pointer">Arsenal</span>
+        <span class="text-gray-400 cursor-pointer">Upgrades</span>
+        <span onclick="triggerBattle()" class="text-red-400 font-bold cursor-pointer animate-pulse">Battle ⚔️</span>
     </footer>
 
     <script>
@@ -89,6 +89,19 @@
             totalPower = 0;
             powerEl.innerText = 0;
             render();
+        }
+
+        function triggerBattle() {
+            if (totalPower === 0) {
+                alert('Your bag is empty! Place items to build power before fighting.');
+                return;
+            }
+            let enemyPower = 100;
+            if (totalPower >= enemyPower) {
+                alert(`Victory! 🏆 Your Power (${totalPower}) crushed the enemy (${enemyPower})!`);
+            } else {
+                alert(`Defeat! 💀 Enemy Power (${enemyPower}) was higher than your total power (${totalPower}). Add more weapons!`);
+            }
         }
 
         render();
