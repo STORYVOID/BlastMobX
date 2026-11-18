@@ -2,28 +2,28 @@ import React, { useState } from 'react';
 import TextToSpeechView from './TextToSpeechView';
 import PremiumView from './PremiumView';
 import FileMakerView from './FileMakerView';
-import { Volume2, Crown, FileText, LogOut, User, ShieldCheck } from 'lucide-react';
+import { Volume2, Crown, FileText, LogOut, Mic } from 'lucide-react';
 
 export default function Dashboard({ userEmail, onLogout }) {
   const [activeTab, setActiveTab] = useState('tts');
-  const [isPremium, setIsPremium] = useState(localStorage.getItem('is_premium') === 'true');
+  const [isPremium, setIsPremium] = useState(localStorage.getItem('voxaflow_premium') === 'true');
 
   const handleTogglePremium = (status) => {
     setIsPremium(status);
-    localStorage.setItem('is_premium', status);
+    localStorage.setItem('voxaflow_premium', status);
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-slate-950 overflow-hidden">
-      {/* App Header (Mobile Bar) */}
-      <div className="px-5 py-3.5 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 flex items-center justify-between z-10">
+    <div className="flex-1 flex flex-col bg-slate-950 overflow-hidden relative">
+      {/* Header */}
+      <div className="px-5 py-3.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between z-10">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center font-bold text-sm">
-            <User size={18} />
+          <div className="w-9 h-9 rounded-xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-400 flex items-center justify-center font-bold text-sm">
+            <Mic size={18} />
           </div>
           <div className="overflow-hidden">
-            <div className="text-[10px] text-slate-400 font-medium">Logged in</div>
-            <div className="text-xs font-bold text-white truncate max-w-[150px]">{userEmail}</div>
+            <div className="text-[10px] text-indigo-400 font-bold tracking-wider">VOXAFLOW</div>
+            <div className="text-xs font-semibold text-white truncate max-w-[150px]">{userEmail}</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -42,51 +42,51 @@ export default function Dashboard({ userEmail, onLogout }) {
         </div>
       </div>
 
-      {/* Dynamic Screen Area */}
-      <div className="flex-1 overflow-y-auto p-5 pb-24">
+      {/* Main Content Area */}
+      <div className="flex-1 overflow-y-auto p-5 pb-28">
         {activeTab === 'tts' && <TextToSpeechView isPremium={isPremium} />}
         {activeTab === 'premium' && <PremiumView isPremium={isPremium} onTogglePremium={handleTogglePremium} />}
         {activeTab === 'filemaker' && <FileMakerView isPremium={isPremium} />}
       </div>
 
-      {/* Bottom App Navigation Bar (Jaise real apps me hota hai) */}
-      <div className="absolute bottom-6 left-4 right-4 bg-slate-900/90 backdrop-blur-xl border border-slate-800/80 rounded-2xl p-1.5 grid grid-cols-3 gap-1 shadow-2xl z-30">
+      {/* 3 Buttons Bottom Navigation */}
+      <div className="absolute bottom-4 left-4 right-4 bg-slate-900/95 backdrop-blur-xl border border-slate-800 rounded-2xl p-1.5 grid grid-cols-3 gap-1 shadow-2xl z-20">
         <button
           onClick={() => setActiveTab('tts')}
           className={`py-2.5 rounded-xl flex flex-col items-center justify-center gap-1 transition-all ${
             activeTab === 'tts'
-              ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 font-semibold'
+              ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 font-bold'
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
-          <Volume2 size={18} />
-          <span className="text-[10px]">Text-Speech</span>
+          <Volume2 size={16} />
+          <span className="text-[10px]">1. Text-Speech</span>
         </button>
 
         <button
           onClick={() => setActiveTab('premium')}
           className={`py-2.5 rounded-xl flex flex-col items-center justify-center gap-1 transition-all ${
             activeTab === 'premium'
-              ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/30 font-semibold'
+              ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/30 font-bold'
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
-          <Crown size={18} />
-          <span className="text-[10px]">Premium</span>
+          <Crown size={16} />
+          <span className="text-[10px]">2. Premium</span>
         </button>
 
         <button
           onClick={() => setActiveTab('filemaker')}
           className={`py-2.5 rounded-xl flex flex-col items-center justify-center gap-1 transition-all ${
             activeTab === 'filemaker'
-              ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 font-semibold'
+              ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 font-bold'
               : 'text-slate-400 hover:text-slate-200'
           }`}
         >
-          <FileText size={18} />
-          <span className="text-[10px]">Files</span>
+          <FileText size={16} />
+          <span className="text-[10px]">3. File Maker</span>
         </button>
       </div>
     </div>
   );
-          }
+}
