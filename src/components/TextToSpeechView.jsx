@@ -9,7 +9,7 @@ export default function TextToSpeechView({ isPremium }) {
   const handleSpeak = () => {
     if (!text.trim()) return;
     if (!isPremium) {
-      setShowAd(true);
+      setShowAd(true); // Free users watch ad first
       return;
     }
     executeSpeech();
@@ -31,20 +31,24 @@ export default function TextToSpeechView({ isPremium }) {
         <h2 className="text-sm font-bold text-white flex items-center gap-2">
           <Volume2 className="text-indigo-400" size={16} /> Text to Speech
         </h2>
-        {!isPremium && <span className="text-[10px] bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">Ad-supported</span>}
+        {!isPremium && (
+          <span className="text-[10px] bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-2 py-0.5 rounded font-medium">
+            Ad-Supported
+          </span>
+        )}
       </div>
 
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Yahan text likhein jisko audio me convert karna hai..."
-        className="w-full h-40 bg-slate-900 border border-slate-800 rounded-2xl p-4 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 text-xs resize-none"
+        placeholder="Yahan text type karein jise aawaz me convert karna hai..."
+        className="w-full h-44 bg-slate-900 border border-slate-800 rounded-2xl p-4 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 text-xs resize-none"
       />
 
       <button
         onClick={handleSpeak}
         disabled={!text.trim()}
-        className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 active:scale-[0.98] disabled:opacity-50 text-white font-medium rounded-2xl flex items-center justify-center gap-2 text-xs shadow-lg shadow-indigo-600/20 transition-all"
+        className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 active:scale-[0.98] disabled:opacity-50 text-white font-bold rounded-2xl flex items-center justify-center gap-2 text-xs shadow-lg shadow-indigo-600/20 transition-all"
       >
         <Play size={16} />
         <span>Play Audio</span>
@@ -56,11 +60,11 @@ export default function TextToSpeechView({ isPremium }) {
             <div className="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-2xl flex items-center justify-center mx-auto">
               <AlertCircle size={24} />
             </div>
-            <h3 className="text-base font-bold text-white">Sponsored Ad</h3>
-            <p className="text-[11px] text-slate-400">Free user ke liye ad chal rahi hai. Premium lene par ads nahi aayengi.</p>
+            <h3 className="text-base font-bold text-white">VoxaFlow Sponsored Ad</h3>
+            <p className="text-[11px] text-slate-400">Free version me audio chalne se pehle ad aati hai. Premium lene par ye hat jayegi!</p>
             <button
               onClick={() => { setShowAd(false); executeSpeech(); }}
-              className="w-full py-3 bg-indigo-600 text-white text-xs font-medium rounded-xl"
+              className="w-full py-3 bg-indigo-600 text-white text-xs font-bold rounded-xl"
             >
               Skip Ad & Play
             </button>
