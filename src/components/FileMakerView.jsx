@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FileText, Download, CheckCircle } from 'lucide-react';
 
 export default function FileMakerView({ isPremium }) {
-  const [fileName, setFileName] = useState('my-file');
+  const [fileName, setFileName] = useState('speech-script');
   const [fileContent, setFileContent] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
@@ -25,8 +25,11 @@ export default function FileMakerView({ isPremium }) {
   return (
     <div className="flex flex-col space-y-4">
       <h2 className="text-sm font-bold text-white flex items-center gap-2">
-        <FileText className="text-emerald-400" size={16} /> File Maker
+        <FileText className="text-emerald-400" size={16} /> File Maker Module
       </h2>
+      <p className="text-xs text-slate-400">
+        Is alag file me aap apne text scripts ya code ki files generate aur download kar sakte hain.
+      </p>
 
       <form onSubmit={handleCreateFile} className="space-y-3">
         <div>
@@ -44,7 +47,7 @@ export default function FileMakerView({ isPremium }) {
           <textarea
             value={fileContent}
             onChange={(e) => setFileContent(e.target.value)}
-            placeholder="File ka text yahan likhein..."
+            placeholder="Yahan file content likhein..."
             className="w-full h-32 bg-slate-900 border border-slate-800 rounded-xl p-3 text-white text-xs focus:outline-none focus:border-emerald-500 resize-none"
           />
         </div>
@@ -52,7 +55,7 @@ export default function FileMakerView({ isPremium }) {
         <button
           type="submit"
           disabled={!fileContent.trim()}
-          className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] disabled:opacity-50 text-white font-medium rounded-2xl flex items-center justify-center gap-2 text-xs shadow-lg shadow-emerald-600/20 transition-all"
+          className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 active:scale-[0.98] disabled:opacity-50 text-white font-bold rounded-2xl flex items-center justify-center gap-2 text-xs shadow-lg shadow-emerald-600/20 transition-all"
         >
           <Download size={16} />
           <span>Create & Download File</span>
