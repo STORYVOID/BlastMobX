@@ -9,7 +9,7 @@ export default function TextToSpeechView({ isPremium }) {
   const handleSpeak = () => {
     if (!text.trim()) return;
     if (!isPremium) {
-      setShowAd(true); // Free users watch ad first
+      setShowAd(true);
       return;
     }
     executeSpeech();
@@ -26,33 +26,41 @@ export default function TextToSpeechView({ isPremium }) {
   };
 
   return (
-    <div className="flex flex-col h-full space-y-4">
-      <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-        <Volume2 className="text-indigo-400" size={20} /> Text to Speech Converter
-      </h2>
+    <div className="flex flex-col space-y-4">
+      <div className="flex items-center justify-between">
+        <h2 className="text-sm font-bold text-white flex items-center gap-2">
+          <Volume2 className="text-indigo-400" size={16} /> Text to Speech
+        </h2>
+        {!isPremium && <span className="text-[10px] bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">Ad-supported</span>}
+      </div>
+
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Yahan text type karein..."
-        className="w-full h-36 bg-slate-950 border border-slate-800 rounded-xl p-4 text-white text-sm"
+        placeholder="Yahan text likhein jisko audio me convert karna hai..."
+        className="w-full h-40 bg-slate-900 border border-slate-800 rounded-2xl p-4 text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 text-xs resize-none"
       />
+
       <button
         onClick={handleSpeak}
         disabled={!text.trim()}
-        className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-xl flex items-center gap-2 text-sm"
+        className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 active:scale-[0.98] disabled:opacity-50 text-white font-medium rounded-2xl flex items-center justify-center gap-2 text-xs shadow-lg shadow-indigo-600/20 transition-all"
       >
-        <Play size={16} /> Play Audio
+        <Play size={16} />
+        <span>Play Audio</span>
       </button>
 
       {showAd && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-sm w-full text-center space-y-4">
-            <AlertCircle size={24} className="mx-auto text-amber-400" />
-            <h3 className="text-lg font-bold text-white">Sponsored Ad</h3>
-            <p className="text-xs text-slate-400">Free user ke liye ad chal rahi hai. Premium le kar ads hataein!</p>
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-xs w-full text-center space-y-4">
+            <div className="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-2xl flex items-center justify-center mx-auto">
+              <AlertCircle size={24} />
+            </div>
+            <h3 className="text-base font-bold text-white">Sponsored Ad</h3>
+            <p className="text-[11px] text-slate-400">Free user ke liye ad chal rahi hai. Premium lene par ads nahi aayengi.</p>
             <button
               onClick={() => { setShowAd(false); executeSpeech(); }}
-              className="w-full py-2.5 bg-indigo-600 text-white text-sm rounded-xl"
+              className="w-full py-3 bg-indigo-600 text-white text-xs font-medium rounded-xl"
             >
               Skip Ad & Play
             </button>
