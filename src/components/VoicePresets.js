@@ -1,0 +1,42 @@
+export const VOICE_PRESETS = [
+  {
+    id: 'mysterious-old-man',
+    name: 'Mysterious Budha Aadmi',
+    gender: 'male',
+    tag: 'Deep • Mysterious',
+    pitch: 0.65,
+    rate: 0.85,
+  },
+  {
+    id: 'clear-uncle',
+    name: 'Clear Voice Uncle',
+    gender: 'male',
+    tag: 'Clear • Calm',
+    pitch: 0.85,
+    rate: 0.95,
+  },
+  {
+    id: 'young-guy',
+    name: 'Energetic Ladka',
+    gender: 'male',
+    tag: 'Sharp • Fast',
+    pitch: 1.15,
+    rate: 1.08,
+  },
+  {
+    id: 'smooth-female',
+    name: 'Soft & Charming Ladki',
+    gender: 'female',
+    tag: 'Smooth • Expressive',
+    pitch: 1.25,
+    rate: 0.95,
+  },
+  {
+    id: 'storyteller-girl',
+    name: 'Clear Narrator Girl',
+    gender: 'female',
+    tag: 'Crisp • Story',
+    pitch: 1.1,
+    rate: 1.0,
+  },
+];
